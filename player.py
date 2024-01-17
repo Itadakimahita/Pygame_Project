@@ -8,6 +8,8 @@ class Player(pygame.sprite.Sprite):
         self.image = pygame.transform.scale(pygame.image.load('assets/player.png').convert_alpha(), (86, 86))
         self.rect = self.image.get_rect(topleft = pos)
 
+        self.hitbox = self.rect.inflate(0, -26)
+
         self.direction = pygame.math.Vector2() # have [x: and y: ]
         self.speed = 5
         self.obstacle_sprites = obstacle_sprites
@@ -40,28 +42,29 @@ class Player(pygame.sprite.Sprite):
     def collision(self, direction):
         if direction == 'horizontal':
             for sprite in self.obstacle_sprites:
-                if sprite.rect.colliderect(self.rect): # check for collision
+                if sprite.hitbox.colliderect(self.hitbox): # check for collision
                     if self.direction.x > 0: #moving right
-                        self.rect.right = sprite.rect.left
+                        self.hitbox.right = sprite.hitbox.left
                     if self.direction.x < 0: # moving left
-                        self.rect.left = sprite.rect.right
+                        self.hitbox.left = sprite.hitbox.right
 
         if direction == 'vertical':
             for sprite in self.obstacle_sprites:
-                if sprite.rect.colliderect(self.rect):
+                if sprite.hitbox.colliderect(self.hitbox):
                     if self.direction.y > 0: #moving down
-                        self.rect.bottom = sprite.rect.top
+                        self.hitbox.bottom = sprite.hitbox.top
                     if self.direction.y < 0: #moving up
-                        self.rect.top = sprite.rect.bottom
+                        self.hitbox.top = sprite.hitbox.bottom
 
     def move(self, speed):
         if self.direction.magnitude() != 0: #if length doesnt equal 0
             self.direction = self.direction.normalize() #equalize it to 1(bcs when x and y != 0 speed will be faster)
 
-        self.rect.x += self.direction.x * speed
+        self.hitbox.x += self.direction.x * speed
         self.collision('horizontal')
-        self.rect.y += self.direction.y * speed
+        self.hitbox.y += self.direction.y * speed
         self.collision('vertical')
+        self.rect.center = self.hitbox.center
 
 
     def try_dodge(self):
@@ -72,8 +75,9 @@ class Player(pygame.sprite.Sprite):
             self.last_dodge_time = current_time  # Update the last dodge time
 
     def dodge(self):
-        self.rect.x += self.direction.x * self.speed * 3
-        self.rect.y += self.direction.y * self.speed * 3
+        self.hitbox.x += self.direction.x * self.speed * 3
+        self.hitbox.y += self.direction.y * self.speed * 3
+        self.rect.center = self.hitbox.center
 
 
     #update the game
