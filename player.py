@@ -1,4 +1,5 @@
 import pygame
+import time
 from settings import *
 
 class Player(pygame.sprite.Sprite):
@@ -10,6 +11,9 @@ class Player(pygame.sprite.Sprite):
         self.direction = pygame.math.Vector2() # have [x: and y: ]
         self.speed = 5
         self.obstacle_sprites = obstacle_sprites
+
+        self.dodge_cooldown = 2.0  # Set the initial cooldown time (in seconds)
+        self.last_dodge_time = 0.0
 
 
     def input(self):
@@ -29,7 +33,10 @@ class Player(pygame.sprite.Sprite):
             self.direction.x = 1
         else:
             self.direction.x = 0
-            
+
+        if keys[pygame.K_LSHIFT]:
+            self.try_dodge()
+
     def collision(self, direction):
         if direction == 'horizontal':
             for sprite in self.obstacle_sprites:
@@ -55,6 +62,18 @@ class Player(pygame.sprite.Sprite):
         self.collision('horizontal')
         self.rect.y += self.direction.y * speed
         self.collision('vertical')
+
+
+    def try_dodge(self):
+        # Check if enough time has passed since the last dodge
+        current_time = time.time()
+        if current_time - self.last_dodge_time >= self.dodge_cooldown:
+            self.dodge()
+            self.last_dodge_time = current_time  # Update the last dodge time
+
+    def dodge(self):
+        self.rect.x += self.direction.x * self.speed * 3
+        self.rect.y += self.direction.y * self.speed * 3
 
 
     #update the game
