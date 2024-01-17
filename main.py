@@ -1,5 +1,6 @@
 import pygame, sys
 from settings import *
+from debug import debug
 
 class Game:
     def __init__(self):
@@ -7,6 +8,7 @@ class Game:
         #setup для игры
         pygame.init()
         self.screen = pygame.display.set_mode((WIDTH, HEIGHT))
+        pygame.display.set_caption('Dungeon Crawler')
         self.cloack = pygame.time.Clock()
 
     def run(self):

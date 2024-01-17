@@ -1,6 +1,6 @@
 #Необязательно
 #debug for more information
-
+#It work like print and will show messages on topleft
 
 import pygame
 pygame.init()
@@ -10,5 +10,5 @@ def debug(info, y=10, x = 10):
     display_surface = pygame.display.get_surface()
     debug_surf = font.render(str(info), True, 'White')
     debug_rect = debug_surf.get_rect(topleft = (x, y))
-    pygame.draw.rect(display_surface, 'Black', debug_surf)
+    pygame.draw.rect(display_surface, 'Black', debug_rect)
     display_surface.blit(debug_surf, debug_rect)
