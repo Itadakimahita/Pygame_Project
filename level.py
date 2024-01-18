@@ -45,7 +45,7 @@ class YSortCameraGroup(pygame.sprite.Group): # Y-camera
         self.offset = pygame.math.Vector2()
 
         #creating the floor
-        self.floor_surf = pygame.image.load('../').convert()
+        self.floor_surf = pygame.image.load('level_graphics/graphics/tilemap/ground.png').convert()
         self.floor_rect = self.floor_surf.get_rect(topleft = (0,0))
 
     def custom_draw(self, player): #drawning method that will replace draw method
@@ -53,6 +53,10 @@ class YSortCameraGroup(pygame.sprite.Group): # Y-camera
         #gettign offset for player
         self.offset.x = player.rect.centerx - self.half_width
         self.offset.y = player.rect.centery - self.half_height
+
+        #drawning the floor
+        floor_offset_pos = self.floor_rect.topleft - self.offset
+        self.display_surface.blit(self.floor_surf, floor_offset_pos)
 
         # for sprite in self.sprites():
         for sprite in sorted(self.sprites(), key = lambda sprite: sprite.rect.centery): # draw all of out elements
