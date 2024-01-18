@@ -4,6 +4,7 @@ from support import *
 from tile import Tile
 from player import Player
 from random import choice
+from weapon import Weapon
 
 
 
@@ -19,6 +20,9 @@ class Level:
         self.obstacle_sprites = pygame.sprite.Group() #touchbles objects
 
         self.create_map()
+
+    def create_attack(self):
+        Weapon(self.player, [self.visible_sprites])
 
     #will create map from settings
     def create_map(self):
@@ -53,7 +57,9 @@ class Level:
         #             Tile((x,y), [self.visible_sprites, self.obstacle_sprites])
         #         if col == 'p':
         #             self.player = Player((x,y), [self.visible_sprites], self.obstacle_sprites)
-        self.player = Player((2000,1430), [self.visible_sprites], self.obstacle_sprites)
+        self.player = Player((2000,1430), [self.visible_sprites], self.obstacle_sprites, self.create_attack)
+
+    
 
     def run(self):
         #will update actionsse
