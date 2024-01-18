@@ -11,7 +11,9 @@ class Player(pygame.sprite.Sprite):
 
         self.hitbox = self.rect.inflate(-10, -26)
 
+        #graphic setup
         self.import_player_assets()
+        self.status = 'down'
 
         self.direction = pygame.math.Vector2() # have [x: and y: ]
         self.speed = 5
@@ -23,7 +25,6 @@ class Player(pygame.sprite.Sprite):
 
         self.dodge_cooldown = 2.0  # Set the initial cooldown time (in seconds)
         self.last_dodge_time = 0.0
-
 
     def import_player_assets(self):
         character_path = 'level_graphics/graphics/player/'
@@ -50,16 +51,20 @@ class Player(pygame.sprite.Sprite):
         
         if keys[pygame.K_UP]:
             self.direction.y = -1
+            self.status = 'up'
         elif keys[pygame.K_DOWN]:
             self.direction.y = 1
+            self.status = 'down'
         else:
             self.direction.y = 0
 
 
         if keys[pygame.K_LEFT]:
             self.direction.x = -1
+            self.status = 'left'
         elif keys[pygame.K_RIGHT]:
             self.direction.x = 1
+            self.status = 'right'
         else:
             self.direction.x = 0
 
@@ -81,6 +86,24 @@ class Player(pygame.sprite.Sprite):
             self.attacking = True
             self.attack_time = pygame.time.get_ticks()
             print('magic attack')
+
+    def get_status(self):
+
+        #idle status
+        if self.direction.x == 0 and self.direction.y == 0:
+            if 'idle' not in self.status and not 'attack' in self.status:
+                self.status += '_idle'
+        if self.attacking:
+            self.direction.x = 0
+            self.direction.y = 0
+            if not 'attack' in self.status:
+                if 'idle' in self.status:
+                    self.status = self.status.replace('idle', 'attack')
+                else:
+                    self.status += '_attack'
+        else:
+            if 'attack' in self.status:
+                self.status = self.status.replace('_attack', '')
 
     def collision(self, direction):
         if direction == 'horizontal':
@@ -135,4 +158,5 @@ class Player(pygame.sprite.Sprite):
     def update(self):
         self.input()
         self.cooldowns()
+        self.get_status()
         self.move(self.speed)
