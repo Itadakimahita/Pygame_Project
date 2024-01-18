@@ -4,6 +4,14 @@ HEIGHT = 720
 FPS = 60
 TILESIZE = 64
 
+weapon_data = {
+    'sword': {'cooldown': 100, 'damage': 15, 'graphic': 'level_graphics/graphics/weapons/sword/full.png'}, # 0
+    'lance': {'cooldown': 400, 'damage': 30, 'graphic': 'level_graphics/graphics/weapons/lance/full.png'}, # 1
+    'axe': {'cooldown': 300, 'damage': 20, 'graphic': 'level_graphics/graphics/weapons/axe/full.png'}, # 2
+    'rapier': {'cooldown': 50, 'damage': 8, 'graphic': 'level_graphics/graphics/weapons/rapier/full.png'}, # 3
+    'sai': {'cooldown': 80, 'damage': 10, 'graphic': 'level_graphics/graphics/weapons/sai/full.png'}, # 4
+}
+
 WORLD_MAP = [
     #map 20x20
     ['x','x','x','x','x','x','x','x','x','x','x','x','x','x','x','x','x','x','x','x',], #1
