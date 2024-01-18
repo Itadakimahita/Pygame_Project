@@ -14,6 +14,8 @@ class Player(pygame.sprite.Sprite):
         #graphic setup
         self.import_player_assets()
         self.status = 'down'
+        self.frame_index = 0
+        self.animation_speed = 0.15
 
         self.direction = pygame.math.Vector2() # have [x: and y: ]
         self.speed = 5
@@ -139,7 +141,17 @@ class Player(pygame.sprite.Sprite):
             if current_time - self.attack_time >= self.attack_cooldown:
                 self.attacking = False
 
-    
+    def animate(self):
+        animation = self.animations[self.status]
+
+        #loop over the frame index
+        self.frame_index += self.animation_speed
+        if self.frame_index >= len(animation):
+            self.frame_index = 0
+
+        #set the image
+        self.image = animation[int(self.frame_index)]
+        self.rect = self.image.get_rect(center = self.hitbox.center)
 
     # def try_dodge(self):
     #     # Check if enough time has passed since the last dodge
@@ -159,4 +171,5 @@ class Player(pygame.sprite.Sprite):
         self.input()
         self.cooldowns()
         self.get_status()
+        self.animate()
         self.move(self.speed)
