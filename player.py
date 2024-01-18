@@ -22,9 +22,13 @@ class Player(pygame.sprite.Sprite):
         self.attacking = False
         self.attack_cooldown = 400
         self.attack_time = None
-        self.create_attack = create_attack
 
         self.obstacle_sprites = obstacle_sprites
+
+        #weapon
+        self.create_attack = create_attack
+        self.weapon_index = 0 #index of weapon to choose
+        self.weapon = list(weapon_data.keys())[self.weapon_index]
 
         self.dodge_cooldown = 2.0  # Set the initial cooldown time (in seconds)
         self.last_dodge_time = 0.0
