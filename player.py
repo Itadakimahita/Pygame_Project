@@ -37,7 +37,9 @@ class Player(pygame.sprite.Sprite):
             self.direction.x = 0
 
         if keys[pygame.K_LSHIFT]:
-            self.try_dodge()
+            self.speed = 8
+        else:
+            self.speed = 5
 
     def collision(self, direction):
         if direction == 'horizontal':
@@ -67,17 +69,17 @@ class Player(pygame.sprite.Sprite):
         self.rect.center = self.hitbox.center
 
 
-    def try_dodge(self):
-        # Check if enough time has passed since the last dodge
-        current_time = time.time()
-        if current_time - self.last_dodge_time >= self.dodge_cooldown:
-            self.dodge()
-            self.last_dodge_time = current_time  # Update the last dodge time
+    # def try_dodge(self):
+    #     # Check if enough time has passed since the last dodge
+    #     current_time = time.time()
+    #     if current_time - self.last_dodge_time >= self.dodge_cooldown:
+    #         self.dodge()
+    #         self.last_dodge_time = current_time  # Update the last dodge time
 
-    def dodge(self):
-        self.hitbox.x += self.direction.x * self.speed * 3
-        self.hitbox.y += self.direction.y * self.speed * 3
-        self.rect.center = self.hitbox.center
+    # def dodge(self):
+    #     self.hitbox.x += self.direction.x * self.speed * 10
+    #     self.hitbox.y += self.direction.y * self.speed * 10
+    #     self.rect.center = self.hitbox.center
 
 
     #update the game
