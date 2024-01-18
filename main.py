@@ -6,6 +6,8 @@ from level import Level
 class Game:
     def __init__(self):
 
+        
+
         #setup для игры
         pygame.init()
         self.screen = pygame.display.set_mode((WIDTH, HEIGHT))
