@@ -12,6 +12,10 @@ class Player(pygame.sprite.Sprite):
 
         self.direction = pygame.math.Vector2() # have [x: and y: ]
         self.speed = 5
+        self.attacking = False
+        self.attack_cooldown = 400
+        self.attack_time = None
+
         self.obstacle_sprites = obstacle_sprites
 
         self.dodge_cooldown = 2.0  # Set the initial cooldown time (in seconds)
@@ -36,10 +40,24 @@ class Player(pygame.sprite.Sprite):
         else:
             self.direction.x = 0
 
+
+        #dodge or sprint
         if keys[pygame.K_LSHIFT]:
             self.speed = 8
         else:
             self.speed = 5
+
+        #attack input
+        if keys[pygame.K_SPACE] and not self.attacking:
+            self.attacking = True
+            self.attack_time = pygame.time.get_ticks()
+            print('attack')
+
+        # magic attack
+        if keys[pygame.K_LCTRL] and not self.attacking:
+            self.attacking = True
+            self.attack_time = pygame.time.get_ticks()
+            print('magic attack')
 
     def collision(self, direction):
         if direction == 'horizontal':
@@ -68,6 +86,14 @@ class Player(pygame.sprite.Sprite):
         self.collision('vertical')
         self.rect.center = self.hitbox.center
 
+    def cooldowns(self):
+        current_time = pygame.time.get_ticks()
+
+        if self.attacking:
+            if current_time - self.attack_time >= self.attack_cooldown:
+                self.attacking = False
+
+    
 
     # def try_dodge(self):
     #     # Check if enough time has passed since the last dodge
@@ -85,4 +111,5 @@ class Player(pygame.sprite.Sprite):
     #update the game
     def update(self):
         self.input()
+        self.cooldowns()
         self.move(self.speed)
