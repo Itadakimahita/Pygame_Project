@@ -5,10 +5,10 @@ from settings import *
 class Player(pygame.sprite.Sprite):
     def __init__(self, pos, groups, obstacle_sprites):
         super().__init__(groups)
-        self.image = pygame.transform.scale(pygame.image.load('assets/player.png').convert_alpha(), (86, 86))
+        self.image = pygame.transform.scale(pygame.image.load('level_graphics/graphics/test/player.png').convert_alpha(), (64, 64))
         self.rect = self.image.get_rect(topleft = pos)
 
-        self.hitbox = self.rect.inflate(0, -26)
+        self.hitbox = self.rect.inflate(-10, -26)
 
         self.direction = pygame.math.Vector2() # have [x: and y: ]
         self.speed = 5
